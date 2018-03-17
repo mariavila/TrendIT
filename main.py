@@ -1,10 +1,11 @@
 import sys
 import os
 import csv
+
 import GetTop10
 from sentimentAnalysis import createClassifier,Classify
 from makeSubredditPredictions import SubredditProbability
-subreditCateg = {}
+subreditCateg = loadDictionary()
 c = createClassifier()
 def loadDictionary():
     filename = "subredditCategories.csv"
@@ -66,8 +67,13 @@ def getSubredditNames (sub):
 def getTopSubredits (num=100,time="day"):
     subredits = GetTop10.get_top_posts_subreddits(num,time)
     subredNames= getSubredditNames(subredits)
-    return subredits
-
+    d = {}
+    for elem in subredNames:
+        if elem in d.keys():
+            d[elem] += 1
+        else :
+            d[elem] = 1
+    return d
 def getDailyOutliers ():
 
     c = SubredditProbability()
@@ -89,13 +95,35 @@ def getDailyOutliers ():
             outliers.append(subreddit)
     print (len(outliers))
     return outliers
-def getTopResults (n_posts=10, n_comments=50, timeperiod="day"):
 
-    comments = GetTop10.get_top_posts_comments(n_posts,n_comments,timeperiod)
-    return getOverallValues(c,comments)
+def getTopResults (n_posts=10, n_comments=50, timeperiod="day"):
+    posts = GetTop10.get_top_posts_comments(n_posts,n_comments,timeperiod)
+    return getOverallValues(c,posts)
+
+def getTopResultsByCategory (category,n_posts=100,n_comments=50, timeperiod = "day"):
+    posts = GetTop10.get_top_posts_comments(n_posts,n_comments,timeperiod)
+    posts = filter (lambda p : getCategory(p["sub"])==category.lower(), posts)
+    if len (posts)>0:
+        return getOverallValues(c,posts)
+    else :
+        print ("WARNING : wrong category : "+category)
+        return []
+
+
+def getMostPopularCategories (n_posts =100,n_comments=50,timeperiod="day"):
+    posts = GetTop10.get_top_posts_comments(n_posts,n_comments,timeperiod)
+    cats = {}
+    for p in posts :
+        current_category = getCategory(p["sub"])
+        if current_category in cats.keys():
+            cats[current_category] += 1
+        else:
+            cats[current_category] = 1
+    return cats
+
 def getCategory (subreddit):
     if subreddit in subreditCateg.keys():
-        return subreditCateg[subreddit]
+        return subreditCateg[subreddit].lower()
     else :
         return "other"
 if __name__=="__main__":
