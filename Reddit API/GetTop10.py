@@ -78,9 +78,8 @@ def get_top_posts_subreddits(n_posts=100, time_period="day"):
     for post in [a["data"] for a in response["data"]["children"]]:
         sub = post["subreddit"]
         post_upvotes = post["ups"]
-        post.append({"sub": sub, "upvotes": post_upvotes})
+        posts.append({"sub": sub, "upvotes": post_upvotes})
     return posts
-
 
 
 def refresh_token():
@@ -105,4 +104,4 @@ def refresh_token():
 
 if __name__ == "__main__":
     refresh_token()
-    print(get_top_posts_comments(2, 2))
+    print(get_top_posts_subreddits(10))
