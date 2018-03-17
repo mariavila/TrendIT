@@ -42,7 +42,7 @@ def get_top_posts_comments(n_posts=10, n_comments=50, time_period="day"):
         response_post = requests.get("https://oauth.reddit.com/r/%s/comments/%s" % (sub, post_id),
                                      headers=headers, params=params).json()
         comments = get_comment_data(response_post[1])
-        posts.append({"title": title, "upvotes": post_upvotes, "comments": comments})
+        posts.append({"title": title, "upvotes": post_upvotes, "comments": comments,"sub":sub})
 
     return posts
 

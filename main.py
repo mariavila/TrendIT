@@ -38,7 +38,7 @@ def getOverallValues (classifier,posts):
         else:
             print ("Positive opinion", percent_pos)
             value = percent_pos
-        l.append((d["title"],value))
+        l.append((d["title"],value,d["sub"]))
     return l
 
 def getSubredditNames (sub):
