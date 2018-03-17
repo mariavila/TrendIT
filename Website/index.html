@@ -103,6 +103,10 @@
             <div class="service-desc">
               <h5>Top 1</h5>
               <p id="top.1">First post description and sentiment analysis</p>
+              <div style="height:10px;width:80%;background:gray;margin-left:10%;margin-bottom:10px">
+                 <div style="height:10px;width:50%;background:red">
+                 </div>
+              </div>
             </div>
           </div>
         </div>
@@ -266,6 +270,15 @@
         </div>
       </div>
     </div>
+
+    <div class="col-md-6">
+      <div class="service-box">
+        <div class="service-desc">
+          <h3>Most popular topics</h3>
+          <div class=".ct-chart .ct-bar" id = "chart2"></div>
+        </div>
+      </div>
+    </div>
   </div>
     <!--posar espai-->
     <div class="container">
@@ -331,7 +344,7 @@
       showGrid: false
     }
   };
-  var responsiveOptions1 = [
+  var responsiveOptions = [
     ['screen and (min-width: 641px) and (max-width: 1024px)', {
       seriesBarDistance: 1,
       axisX: {
@@ -349,7 +362,31 @@
       }
     }]
   ];
-  new Chartist.Bar('#chart1', data1, options1, responsiveOptions1);
+  new Chartist.Bar('#chart1', data1, options1, responsiveOptions);
+
+  var data2 = {
+    labels: ['science', 'images', 'internet'],
+    series: [[60, 20, 5]]
+  };
+  var options2 = {
+    low: 0,
+    onlyInteger:true,
+    seriesBarDistance: 10,
+    reverseData: true,
+    horizontalBars: true,
+    height: 300,
+    axisY: {
+      offset: 70,
+      scaleMinSpace: 100,
+      showGrid: false
+    },
+    axisX: {
+      showLabel:false,
+      showGrid: false
+    }
+  };
+
+  new Chartist.Bar('#chart2', data2, options2, responsiveOptions);
 </script>
 </body>
 </html>
