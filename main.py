@@ -68,11 +68,11 @@ def getTopSubredits (num=100,time="day"):
     subredits = GetTop10.get_top_posts_subreddits(num,time)
     subredNames= getSubredditNames(subredits)
     d = {}
-    for elem in subredNames:
-        if elem in d.keys():
-            d[elem] += 1
+    for i in range (len (subredNames)):
+        if subredNames[i] in d.keys():
+            d[subredNames[i]] += subredits[i]["upvotes"]
         else :
-            d[elem] = 1
+            d[subredNames[i]] = subredits[i]["upvotes"]
     return d
 def getDailyOutliers ():
 
@@ -129,7 +129,7 @@ def getCategory (subreddit):
         return "other"
 if __name__=="__main__":
     initReddit()
-
+    print (getTopSubredits())
     outliers = getDailyOutliers()
     topr = getTopResults()
 
