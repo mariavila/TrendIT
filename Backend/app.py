@@ -2,18 +2,50 @@ from flask import *
 import requests
 import sys
 from threading import Timer
+
 sys.path.append('../Reddit API')
 import GetTop10
 from Constants import *
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 
 headers = None
 token = None
 
+
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return send_from_directory('../Website/', 'index.html')
+
+
+@app.route('/js/<path:path>')
+def send_js(path):
+    return send_from_directory('../Website/js', path)
+
+
+@app.route('/css/<path:path>')
+def send_css(path):
+    return send_from_directory('../Website/css', path)
+
+
+@app.route('/img/<path:path>')
+def send_img(path):
+    return send_from_directory('../Website/img', path)
+
+
+@app.route('/font-awesome/<path:path>')
+def send_font_awesome(path):
+    return send_from_directory('../Website/font-awesome', path)
+
+
+@app.route('/color/<path:path>')
+def send_color(path):
+    return send_from_directory('../Website/color', path)
+
+
+@app.route('/contactform/<path:path>')
+def send_contactform(path):
+    return send_from_directory('../Website/contactform', path)
 
 
 @app.route('/get_top_posts_subreddits', methods=['POST'])
