@@ -9,12 +9,14 @@ subreditCateg = {}
 c = createClassifier()
 def loadDictionary():
     filename = "subredditCategories.csv"
-    if not os.path.isfile(filename) :
+    script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
+    abs_file_path = os.path.join(script_dir, filename)
+    if not os.path.isfile(abs_file_path) :
         print ("WARNING : Not found")
         return {}
     else:
         d = {}
-        fp = open( filename, 'rb' )
+        fp = open( abs_file_path, 'rb' )
         reader = csv.reader( fp, delimiter=',', quotechar='"', escapechar='\\' )
 
         for row in reader:
@@ -131,6 +133,8 @@ def getCategory (subreddit):
         return "other"
 if __name__=="__main__":
     initReddit()
+    subreditCateg = loadDictionary()
+
     print (getMostPopularCategories())
     print (getTopSubredits())
     outliers = getDailyOutliers()
