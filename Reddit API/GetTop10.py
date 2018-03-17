@@ -9,7 +9,7 @@ token = None
 headers = None
 
 
-def get_top_posts(n_posts=10, n_comments=50, time_period="day"):
+def get_top_posts_comments(n_posts=10, n_comments=50, time_period="day"):
 
     time_period = time_period.lower()
 
@@ -60,6 +60,29 @@ def get_comment_data(parent):
     return comments
 
 
+def get_top_posts_subreddits(n_posts=100, time_period="day"):
+    if n_posts > 100:
+        raise NotImplementedError("More than 100 posts not implemented")
+    if n_posts < 1:
+        raise ValueError("n_posts can't be lower than 1")
+    allowed = ("hour", "day", "week", "month", "year", "all")
+    if time_period not in allowed:
+        raise ValueError("time_period has to be one of the following:\n%s" % ", ".join(allowed))
+
+    params = {
+        "t": time_period,
+        "limit": n_posts
+    }
+    response = requests.get("https://oauth.reddit.com/r/all/top", headers=headers, params=params).json()
+    posts = []
+    for post in [a["data"] for a in response["data"]["children"]]:
+        sub = post["subreddit"]
+        post_upvotes = post["ups"]
+        post.append({"sub": sub, "upvotes": post_upvotes})
+    return posts
+
+
+
 def refresh_token():
     global token, headers
     client_auth = requests.auth.HTTPBasicAuth(CLIENT_ID, CLIENT_SECRET)
@@ -82,4 +105,4 @@ def refresh_token():
 
 if __name__ == "__main__":
     refresh_token()
-    print(get_top_posts(2, 2))
+    print(get_top_posts_comments(2, 2))
