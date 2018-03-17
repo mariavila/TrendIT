@@ -14,6 +14,7 @@ def isclose(a,b):
          return False
 
 def getOverallValues (classifier,posts):
+    l = []
     for d in posts:
         print (d["title"])
         #print (Classify(d["title"],classifier))
@@ -28,13 +29,17 @@ def getOverallValues (classifier,posts):
 
         percent_pos = 100*overall_pos/(overall_neg+overall_pos)
         percent_neg = 100*overall_neg/(overall_neg+overall_pos)
-
+        value = 0
         if (isclose(percent_neg,percent_pos)):
             print ("     Neutral opinion")
         elif (percent_neg>percent_pos):
             print ("Negative opinion", percent_neg)
+            value = -percent_neg
         else:
             print ("Positive opinion", percent_pos)
+            value = percent_pos
+        l.append((d["title"],value))
+    return l
 
 def getSubredditNames (sub):
     l = []
@@ -60,16 +65,17 @@ def getDailyOutliers ():
         if c.is_outlier(subreddit):
             #print (subreddit)
             outliers.append(subreddit)
+    print (len(outliers))
     return outliers
+def getTopResults (n_posts=10, n_comments=50, timeperiod="day"):
+
+    comments = GetTop10.get_top_posts_comments(n_posts,n_comments,timeperiod)
+    c = createClassifier()
+    return getOverallValues(c,comments)
 
 if __name__=="__main__":
     initReddit()
-
-    comments = GetTop10.get_top_posts_comments()
-
     outliers = getDailyOutliers()
-    print (len(outliers))
+    topr = getTopResults()
     #Uncomment this line to not get the twitter posts (it goes faster)
     #c = createClassifier(True)
-    c = createClassifier()
-    getOverallValues(c,comments)
