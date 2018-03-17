@@ -46,6 +46,11 @@ def getSubredditNames (sub):
     for elem in sub:
         l.append(elem["sub"])
     return l
+def getTopSubredits (num=100,time="day"):
+    subredits = GetTop10.get_top_posts_subreddits(num,time)
+    subredNames= getSubredditNames(subredits)
+    return subredits
+
 def getDailyOutliers ():
 
     c = SubredditProbability()
