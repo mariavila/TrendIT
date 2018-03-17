@@ -319,9 +319,11 @@
   <!-- Custom Theme JavaScript -->
   <script src="js/custom.js"></script>
 <script>
-
-</script>
-<script>
+  function updateData(){
+    $.post('/get_top_subreddits', data={},success=function(data){
+      console.log(data)
+    })
+  }
   var data1 = {
     labels: ['[cute]', '[wo]', '[su]'],
     series: [[60, 20, 5]]
@@ -386,6 +388,8 @@
   };
 
   new Chartist.Bar('#chart2', data2, options2, responsiveOptions);
+
+  updateData();
 </script>
 </body>
 </html>
