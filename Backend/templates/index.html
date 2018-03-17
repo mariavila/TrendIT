@@ -3,13 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>TrendIt</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script
 </head>
 <body>
-    <ul id="Posts">
-
-    </ul>
+    <table id="Posts">
+        <tr>
+            <th>Subreddit</th>
+            <th>Upvotes</th>
+        </tr>
+    </table>
 </body>
 <script>
-
+    $.post('/get_top_posts_subreddits',data={'n_posts': 100, 'time_period': 'day'},success=function(data){
+        for (var i = 0; i<data.length; i++){
+            var post = data[i];
+            console.log(post);
+            $('#Posts').append('<tr><td>'+post.sub.toString()+'</td><td>'+post.upvotes.toString()+'</td></tr>')
+        }
+    })
 </script>
 </html>
