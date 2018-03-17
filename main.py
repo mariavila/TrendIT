@@ -2,9 +2,9 @@ import sys
 sys.path.append("Reddit API")
 import GetTop10
 from sentimentAnalysis import createClassifier,Classify
+from makeSubredditPredictions import SubredditProbability
 def initReddit ():
     GetTop10.refresh_token()
-    return GetTop10.get_top_posts()
 
 def isclose(a,b):
     err = abs (a-b)
@@ -36,8 +36,39 @@ def getOverallValues (classifier,posts):
         else:
             print ("Positive opinion", percent_pos)
 
+def getSubredditNames (sub):
+    l = []
+    for elem in sub:
+        l.append(elem["sub"])
+    return l
+def getDailyOutliers ():
+
+    c = SubredditProbability()
+    subreditsMonth = GetTop10.get_top_posts_subreddits(100,"month")
+    subredNamesM = getSubredditNames(subreditsMonth)
+
+    c.get_probabilities(subredNamesM)
+    subreditsWeek = GetTop10.get_top_posts_subreddits(100,"week")
+    subredNamesw = getSubredditNames(subreditsWeek)
+    c.get_probabilities(subredNamesw)
+
+    subreditsDay = GetTop10.get_top_posts_subreddits(100,"day")
+    subredNamesDay = getSubredditNames(subreditsDay)
+    print ("Daily outlier subredits:")
+    outliers = []
+    for subreddit in subredNamesDay:
+        if c.is_outlier(subreddit):
+            #print (subreddit)
+            outliers.append(subreddit)
+    return outliers
+
 if __name__=="__main__":
-    comments = initReddit()
+    initReddit()
+
+    comments = GetTop10.get_top_posts_comments()
+
+    outliers = getDailyOutliers()
+    print (len(outliers))
     #Uncomment this line to not get the twitter posts (it goes faster)
     #c = createClassifier(True)
     c = createClassifier()

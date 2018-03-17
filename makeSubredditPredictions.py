@@ -14,8 +14,8 @@ class SubredditProbability:
             else:
                 self.dic_appearances[i] = 1
 
-    def get_probabilities(self):
-        self.get_data_appearance()
+    def get_probabilities(self,data):
+        self.get_data_appearance(data)
         sum = 0.0
         for i in self.dic_appearances.keys():
             sum += self.dic_appearances[i];
@@ -24,6 +24,7 @@ class SubredditProbability:
             self.dic_probability[i] = float(self.dic_appearances[i]) / sum
 
     def is_outlier(self, subreddit):
-        if self.dic_probability[subreddit] > 0.05:
-            return False
+        if subreddit in self.dic_appearances.keys():
+            if self.dic_probability[subreddit] > 0.05:
+                return False    
         return True
