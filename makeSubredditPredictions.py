@@ -5,8 +5,7 @@ class SubredditProbability:
         self.dic_appearances = {}
         self.dic_probability = {}
 
-    def get_data_appearance(self):
-        data = []
+    def get_data_appearance(self,data):
         #call data from reddit
         #data = ["a", "b", "a", "c", "a", "a", "b", "a", "c", "a", "a", "b", "a", "c", "a", "a", "b", "a", "c", "a","a", "b", "a", "c", "a","a", "b", "a", "c", "a", "d"]
         for i in data:
