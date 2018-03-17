@@ -1,7 +1,6 @@
 import sys
 import os
 import csv
-sys.path.append("Reddit API")
 import GetTop10
 from sentimentAnalysis import createClassifier,Classify
 from makeSubredditPredictions import SubredditProbability
@@ -12,7 +11,7 @@ def loadDictionary():
     if not os.path.isfile(filename) :
         print ("WARNING : Not found")
         return {}
-    else :
+    else:
         d = {}
         fp = open( filename, 'rb' )
         reader = csv.reader( fp, delimiter=',', quotechar='"', escapechar='\\' )

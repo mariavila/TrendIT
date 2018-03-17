@@ -14,7 +14,7 @@ def cleanTweet (tweet):
     for word in wordlist:
         if word.isalnum():
             newtweetlist.append(word.lower())
-        else :
+        else:
             cleanword = "".join(c for c in word if c.isalpha())
             newtweetlist.append(cleanword.lower())
 

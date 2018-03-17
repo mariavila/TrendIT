@@ -3,8 +3,8 @@ import requests
 import sys
 from threading import Timer
 
-sys.path.append('../Reddit API')
-import GetTop10
+sys.path.append('..')
+import main
 from Constants import *
 
 app = Flask(__name__, static_url_path='')
@@ -42,7 +42,7 @@ def send_font_awesome(path):
 def send_color(path):
     return send_from_directory('../Website/color', path)
 
-
+"""
 @app.route('/get_top_posts_subreddits', methods=['POST'])
 def get_top_posts():
     # try:
@@ -53,7 +53,16 @@ def get_top_posts():
     #     raise err
     #     return str(type(err)) + err.message
 
+"""
+
+
+@app.route('/get_top_subreddits', methods=['POST'])
+def get_top_subreddits():
+    n_posts = int(request.values.get('m_posts', '100'))
+    time_period = request.values.get('time_period', 'day')
+    return jsonify(main.getTopSubredits(n_posts, time_period))
+
 
 if __name__ == '__main__':
-    GetTop10.refresh_token()
+    main.initReddit()
     app.run(debug=True, port=65010)

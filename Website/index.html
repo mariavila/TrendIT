@@ -375,9 +375,11 @@
   <!-- Custom Theme JavaScript -->
   <script src="js/custom.js"></script>
 <script>
-
-</script>
-<script>
+  function updateData(){
+    $.post('/get_top_subreddits', data={},success=function(data){
+      console.log(data)
+    })
+  }
   var data1 = {
     labels: ['[cute]', '[wo]', '[su]'],
     series: [[60, 20, 5]]
@@ -504,6 +506,8 @@
 
   document.getElementById("barTop12").style.width = "10%";
   document.getElementById("barTop12").style.backgroundColor = getColorForPercentage(0.1);
+
+  updateData();
 </script>
 </body>
 </html>
