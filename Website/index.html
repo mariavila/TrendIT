@@ -21,7 +21,7 @@
 
   <!--Graphs-->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/chartist/0.10.1/chartist.min.css" rel="stylesheet">
-
+  <link href = "css/chart.css" rel="stylesheet" />
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-custom">
@@ -262,7 +262,7 @@
       <div class="service-box">
         <div class="service-desc">
           <h3>Most popular subreddits</h3>
-          <div class="ct-chart ct-perfect-fourth"></div>
+          <div class=".ct-chart .ct-bar" id = "chart1"></div>
         </div>
       </div>
     </div>
@@ -309,14 +309,28 @@
 <script>
   var data1 = {
     labels: ['[cute]', '[wo]', '[su]'],
-    series: [60, 20, 5]
+    series: [[60, 20, 5]]
   };
   var options1 = {
-    seriesBarDistance: 15
+    low: 0,
+    onlyInteger:true,
+    seriesBarDistance: 10,
+    reverseData: true,
+    horizontalBars: true,
+    height: 300,
+    axisY: {
+      offset: 70,
+      scaleMinSpace: 100,
+      showGrid: false
+    },
+    axisX: {
+      showLabel:false,
+      showGrid: false
+    }
   };
   var responsiveOptions1 = [
     ['screen and (min-width: 641px) and (max-width: 1024px)', {
-      seriesBarDistance: 10,
+      seriesBarDistance: 1,
       axisX: {
         labelInterpolationFnc: function (value) {
           return value;
@@ -324,7 +338,7 @@
       }
     }],
     ['screen and (max-width: 640px)', {
-      seriesBarDistance: 5,
+      seriesBarDistance: 1,
       axisX: {
         labelInterpolationFnc: function (value) {
           return value[0];
@@ -332,7 +346,7 @@
       }
     }]
   ];
-  new Chartist.Line('#chart1', data1, options1, responsiveOptions1);
+  new Chartist.Bar('#chart1', data1, options1, responsiveOptions1);
 </script>
 </body>
 </html>
