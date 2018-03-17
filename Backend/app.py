@@ -43,11 +43,6 @@ def send_color(path):
     return send_from_directory('../Website/color', path)
 
 
-@app.route('/contactform/<path:path>')
-def send_contactform(path):
-    return send_from_directory('../Website/contactform', path)
-
-
 @app.route('/get_top_posts_subreddits', methods=['POST'])
 def get_top_posts():
     # try:
