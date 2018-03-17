@@ -37,10 +37,10 @@ def getTweets(dummy=False):
                 tweetsneg.append((wordsT,'neg'))
             elif (int(row[1])==1): # positive tweet
                 tweetspos.append((wordsT,'pos'))
-
-
+        if (len (tweetsneg)>0) :
+            print ("Twitter data successfully added! ")
         return (tweetsneg,tweetspos)
-def createClassifier ():
+def createClassifier (ignoreTweets=False):
     neg_ids = movie_reviews.fileids('neg')
     pos_ids = movie_reviews.fileids('pos')
     neg_sents = [(extractWords(movie_reviews.words(fileids=[f])),'neg') for f in neg_ids]
@@ -49,14 +49,12 @@ def createClassifier ():
 
     #if you dont want to process all tweets, just call :
     #getTweets(True)
-    (neg_tweets,pos_tweets)  = getTweets()
+    (neg_tweets,pos_tweets)  = getTweets(ignoreTweets)
     neg_sents = neg_sents+neg_tweets
     pos_sents = pos_sents + pos_tweets
     trainsizeneg = int (0.75*len(neg_sents))
     trainsizepos = int (0.75*len(pos_sents))
 
-    print (trainsizeneg)
-    print  (trainsizepos)
 
     all_train = neg_sents[:trainsizeneg] + pos_sents[:trainsizepos]
     all_test = neg_sents[trainsizeneg:] + pos_sents[trainsizepos:]
@@ -71,13 +69,16 @@ def createClassifier ():
 
     return classifier
     #return trainClassifier (training_set,test_set,s_analyzer)
-def DoAnalysis (sentence):
-    classifier = createClassifier()
+def Classify (sentence,classifier):
     test_sentence = dict([(word,True) for word in sentence.split()])
 
     prob_dist = classifier.prob_classify(test_sentence)
     result = prob_dist.max()
     acc = prob_dist.prob(result)
     return (result,acc)
+
+def DoAnalysis (sentence):
+    classifier = createClassifier()
+    return Classify(sentence,classifier)
 if __name__=="__main__":
     print (DoAnalysis("I am happy"))
