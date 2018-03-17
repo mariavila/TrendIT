@@ -5,7 +5,7 @@ import csv
 import GetTop10
 from sentimentAnalysis import createClassifier,Classify
 from makeSubredditPredictions import SubredditProbability
-subreditCateg = loadDictionary()
+subreditCateg = {}
 c = createClassifier()
 def loadDictionary():
     filename = "subredditCategories.csv"
@@ -122,6 +122,7 @@ def getMostPopularCategories (n_posts =100,n_comments=50,timeperiod="day"):
     return cats
 
 def getCategory (subreddit):
+    subreditCateg = loadDictionary()
     if subreddit in subreditCateg.keys():
         return subreditCateg[subreddit].lower()
     else :
@@ -130,7 +131,6 @@ if __name__=="__main__":
     initReddit()
 
     outliers = getDailyOutliers()
-    subreditCateg = loadDictionary()
     topr = getTopResults()
 
     #Uncomment this line to not get the twitter posts (it goes faster)
