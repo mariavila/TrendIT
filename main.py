@@ -1,8 +1,26 @@
 import sys
+import os
+import csv
 sys.path.append("Reddit API")
 import GetTop10
 from sentimentAnalysis import createClassifier,Classify
 from makeSubredditPredictions import SubredditProbability
+subreditCateg = {}
+c = createClassifier()
+def loadDictionary():
+    filename = "subredditCategories.csv"
+    if not os.path.isfile(filename) :
+        print ("WARNING : Not found")
+        return {}
+    else :
+        d = {}
+        fp = open( filename, 'rb' )
+        reader = csv.reader( fp, delimiter=',', quotechar='"', escapechar='\\' )
+
+        for row in reader:
+            d[row[0]] = row[1]
+        return d
+
 def initReddit ():
     GetTop10.refresh_token()
 
@@ -46,6 +64,11 @@ def getSubredditNames (sub):
     for elem in sub:
         l.append(elem["sub"])
     return l
+def getTopSubredits (num=100,time="day"):
+    subredits = GetTop10.get_top_posts_subreddits(num,time)
+    subredNames= getSubredditNames(subredits)
+    return subredits
+
 def getDailyOutliers ():
 
     c = SubredditProbability()
@@ -70,12 +93,18 @@ def getDailyOutliers ():
 def getTopResults (n_posts=10, n_comments=50, timeperiod="day"):
 
     comments = GetTop10.get_top_posts_comments(n_posts,n_comments,timeperiod)
-    c = createClassifier()
     return getOverallValues(c,comments)
-
+def getCategory (subreddit):
+    if subreddit in subreditCateg.keys():
+        return subreditCateg[subreddit]
+    else :
+        return "other"
 if __name__=="__main__":
     initReddit()
+
     outliers = getDailyOutliers()
+    subreditCateg = loadDictionary()
     topr = getTopResults()
+
     #Uncomment this line to not get the twitter posts (it goes faster)
     #c = createClassifier(True)
