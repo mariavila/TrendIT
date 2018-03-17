@@ -1,5 +1,6 @@
 from nltk.classify import NaiveBayesClassifier
 from nltk.corpus import movie_reviews
+from nltk.corpus import sentence_polarity
 from nltk.sentiment import SentimentAnalyzer
 from nltk.classify.util import accuracy
 import csv
@@ -40,6 +41,13 @@ def getTweets(dummy=False):
         if (len (tweetsneg)>0) :
             print ("Twitter data successfully added! ")
         return (tweetsneg,tweetspos)
+def getSentPolarities():
+    p = sentence_polarity.sents(categories='pos')
+    n = sentence_polarity.sents(categories='neg')
+    neg_sents = [(extractWords(sentence),'neg') for sentence in n]
+    pos_sents = [(extractWords(sentence),'pos') for sentence in p]
+
+    return (neg_sents,pos_sents)
 def createClassifier (ignoreTweets=False):
     neg_ids = movie_reviews.fileids('neg')
     pos_ids = movie_reviews.fileids('pos')
@@ -48,10 +56,10 @@ def createClassifier (ignoreTweets=False):
 
 
     #if you dont want to process all tweets, just call :
-    #getTweets(True)
+    (neg_pols,pos_pols) = getSentPolarities()
     (neg_tweets,pos_tweets)  = getTweets(ignoreTweets)
-    neg_sents = neg_sents+neg_tweets
-    pos_sents = pos_sents + pos_tweets
+    neg_sents = neg_sents+neg_tweets+neg_pols
+    pos_sents = pos_sents + pos_tweets + pos_pols
     trainsizeneg = int (0.75*len(neg_sents))
     trainsizepos = int (0.75*len(pos_sents))
 

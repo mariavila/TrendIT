@@ -2,19 +2,43 @@ import sys
 sys.path.append("Reddit API")
 import GetTop10
 from sentimentAnalysis import createClassifier,Classify
-def main ():
+def initReddit ():
     GetTop10.refresh_token()
     return GetTop10.get_top_posts()
 
+def isclose(a,b):
+    err = abs (a-b)
+    if err<10:
+        return True
+    else:
+         return False
+
+def getOverallValues (classifier,posts):
+    for d in posts:
+        print (d["title"])
+        #print (Classify(d["title"],classifier))
+        overall_pos = 0
+        overall_neg = 0
+        for com in d["comments"]:
+            (res,acc) = Classify(com["body"],classifier)
+            if (res=='pos'):
+                overall_pos=overall_pos+(acc*com["upvotes"])
+            else :
+                overall_neg=overall_neg+(acc*com["upvotes"])
+
+        percent_pos = 100*overall_pos/(overall_neg+overall_pos)
+        percent_neg = 100*overall_neg/(overall_neg+overall_pos)
+
+        if (isclose(percent_neg,percent_pos)):
+            print ("     Neutral opinion")
+        elif (percent_neg>percent_pos):
+            print ("Negative opinion", percent_neg)
+        else:
+            print ("Positive opinion", percent_pos)
 
 if __name__=="__main__":
-    comments = main()
-    print (len (comments))
-    classifier = createClassifier()
-    for d in comments:
-        print ("*************************************")
-        #print (d)
-
-        print (Classify(d["title"],classifier))
-        for com in d["comments"]:
-            print (com,Classify(com["body"],classifier))
+    comments = initReddit()
+    #Uncomment this line to not get the twitter posts (it goes faster)
+    #c = createClassifier(True)
+    c = createClassifier()
+    getOverallValues(c,comments)
