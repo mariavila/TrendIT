@@ -1,0 +1,6 @@
+CLIENT_ID = "BLRaQ87glSt2PQ"
+CLIENT_SECRET = "CnRJtwYT1l3tJMtUK-oqAG7oKTc"
+REDIRECT_URI = "http://localhost:65010/reddit_callback"
+API = "https://www.reddit.com/api/v1/"
+USER_AGENT = "TrendIt joinhex"
+REFRESH_TOKEN = "24693400-m3cJbLUN8UhXNkm5Aagzf6L2Kp4"
