@@ -22,6 +22,9 @@
   <!--Graphs-->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/chartist/0.10.1/chartist.min.css" rel="stylesheet">
   <link href = "css/chart.css" rel="stylesheet" />
+
+  <link href = "css/buttons.css" rel="stylesheet" />
+
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-custom">
@@ -85,6 +88,60 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-2 col-lg-offset-5">
+          <hr class="marginbot-50">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <div class="wow fadeInLeft" data-wow-delay="0.2s">
+            <div class="service-box">
+              <div class="service-desc">
+                <button id = "daily" onclick="daylyClicked()" class="buttonChangetop"> Today's posts </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <div class="wow fadeInLeft" data-wow-delay="0.2s">
+            <div class="service-box">
+              <div class="service-desc">
+                <button id = "weekly" onclick="weeklyClicked()" class= "buttonChangetop"> This week's posts </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <div class="wow fadeInLeft" data-wow-delay="0.2s">
+            <div class="service-box">
+              <div class="service-desc">
+                <button id = "monthly" onclick="monthlyClicked()" class = "buttonChangetop"> This month's posts </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="wow fadeInLeft" data-wow-delay="0.2s">
+            <div class="service-box">
+              <div class="service-desc">
+                <div class = "dropdownChooseTopic">
+                   <span> Choose topic to view </span>
+                   <div class="dropdownChooseTopic-content">
+                     <p>All </p>
+                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -507,7 +564,27 @@
   document.getElementById("barTop12").style.width = "10%";
   document.getElementById("barTop12").style.backgroundColor = getColorForPercentage(0.1);
 
+  document.getElementById("daily").style.opacity = 1.0;
+  //per default es carrega daily
   updateData();
+
+  function daylyClicked(){
+    document.getElementById("daily").style.opacity = 1.0;
+    document.getElementById("weekly").style.opacity = 0.6;
+    document.getElementById("monthly").style.opacity = 0.6;
+  };
+
+  function weeklyClicked(){
+    document.getElementById("daily").style.opacity = 0.6;
+    document.getElementById("weekly").style.opacity = 1.0;
+    document.getElementById("monthly").style.opacity = 0.6;
+  };
+
+  function monthlyClicked(){
+    document.getElementById("daily").style.opacity = 0.6;
+    document.getElementById("weekly").style.opacity = 0.6;
+    document.getElementById("monthly").style.opacity = 1.0;
+  };
 </script>
 </body>
 </html>
