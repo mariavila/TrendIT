@@ -138,8 +138,8 @@ def getCategoriesList ():
     l = []
     subreditCateg = loadDictionary()
     for word in subreditCateg.keys():
-        if not word in l:
-            l.append(word)
+        if not subreditCateg[word] in l:
+            l.append(subreditCateg[word])
     return l
 if __name__=="__main__":
     initReddit()
