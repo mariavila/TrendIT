@@ -1,6 +1,7 @@
 from flask import *
 import requests
 import sys
+import os
 from threading import Timer
 
 sys.path.append('..')
@@ -58,9 +59,16 @@ def get_top_posts():
 
 @app.route('/get_top_subreddits', methods=['POST'])
 def get_top_subreddits():
-    n_posts = int(request.values.get('m_posts', '100'))
+    n_posts = int(request.values.get('n_posts', '100'))
     time_period = request.values.get('time_period', 'day')
     return jsonify(main.getTopSubredits(n_posts, time_period))
+
+
+@app.route('/get_top_categories', methods=['POST'])
+def get_top_categories():
+    n_posts = int(request.values.get('n_posts', '100'))
+    time_period = request.values.get('time_period', 'day')
+    return jsonify(main.getMostPopularCategories(n_posts, time_period))
 
 
 if __name__ == '__main__':
