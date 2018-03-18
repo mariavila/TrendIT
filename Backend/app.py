@@ -78,6 +78,19 @@ def get_top_results():
     time_period = request.values.get('time_period', 'day')
     return jsonify(main.getTopResults(n_posts, n_comments, time_period))
 
+@app.route('/get_categories', methods=['POST'])
+def get_categories():
+    return jsonify(main.getCategoriesList())
+
+
+@app.route('/get_top_from_category', methods=['POST'])
+def get_top_from_category(categoryname):
+    n_posts = int(request.values.get('n_posts', '100'))
+    n_comments = int(request.values.get('n_comments', '50'))
+    time_period = request.values.get('time_period', 'day')
+    return jsonify(main.getTopResultsByCategory(categoryname,n_posts, n_comments, time_period))
+
+
 
 
 if __name__ == '__main__':

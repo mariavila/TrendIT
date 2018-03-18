@@ -125,8 +125,9 @@
             <div class="service-desc">
               <div class = "dropdownChooseTopic">
                  <span> Choose topic to view </span>
-                 <div class="dropdownChooseTopic-content">
-                   <p>All </p>
+                 <div id=topicDropdown class="dropdownChooseTopic-content">
+                   <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+
                  </div>
               </div>
             </div>
@@ -408,7 +409,7 @@
 						</a>
             </div>
           </div>
-          <p>TrendIT. All rights reserved.</p>
+            <p>TrendIT. All rights reserved.</p>
           <div class="credits">
           </div>
         </div>
@@ -426,6 +427,12 @@
   <!-- Custom Theme JavaScript -->
   <script src="js/custom.js"></script>
 <script>
+$.post('/get_categories',{},function(data){
+    console.log(data);
+    for(var i = 0; i<data.length; i++){
+        $('#topicDropdown').append('<p><a href="#">'+data[i].toString()+'</a></p>');
+    }
+});
   function updateData(chart1,chart2){
     $('#chart1').css('display','none').after('<div id="l1" class="myL"></div>');
     $.post('/get_top_subreddits', {}, function(data) {
@@ -498,7 +505,7 @@
     horizontalBars: true,
     height: 300,
     axisY: {
-      offset: 70,
+      offset: 150,
       scaleMinSpace: 100,
       showGrid: false
     },
@@ -539,7 +546,7 @@
     horizontalBars: true,
     height: 300,
     axisY: {
-      offset: 70,
+      offset: 150,
       scaleMinSpace: 100,
       showGrid: false
     },
@@ -599,6 +606,24 @@
     document.getElementById("weekly").style.opacity = 0.6;
     document.getElementById("monthly").style.opacity = 1.0;
   };
+  updateData(chart1, chart2);
+
+
+  function filterFunction() {
+    var input, filter, ul, li, a, i;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    div = document.getElementById("topicDropdown");
+    a = div.getElementsByTagName("a");
+    for (i = 0; i < a.length; i++) {
+        if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+            a[i].style.display = "";
+        } else {
+            a[i].style.display = "none";
+        }
+    }
+  }
+
 </script>
 </body>
 </html>

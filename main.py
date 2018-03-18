@@ -138,7 +138,7 @@ def getCategoriesList ():
     for word in subreditCateg.keys():
         if not subreditCateg[word] in l:
             l.append(subreditCateg[word])
-    return l
+    return sorted(l)
 if __name__=="__main__":
     initReddit()
     print (getTopSubredits())
