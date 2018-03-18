@@ -117,10 +117,7 @@
                  <span> Choose topic to view </span>
                  <div id=topicDropdown class="dropdownChooseTopic-content">
                    <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-                   <p><a href="#"> abcdefg</a></p>
-                   <p><a href="#"> sdsaaodjsalk</a></p>
-                   <p><a href="#"> pppppppppppp</a></p>
-                   <p><a href="#"> quuuuuuu</a></p>
+                   
                  </div>
               </div>
             </div>
@@ -417,6 +414,12 @@
   <!-- Custom Theme JavaScript -->
   <script src="js/custom.js"></script>
 <script>
+$.post('/get_categories',{},function(data){
+    console.log(data);
+    for(var i = 0; i<data.length; i++){
+        $('#topicDropdown').append('<p><a href="#">'+data[i].toString()+'</a></p>');
+    }
+});
   function updateData(chart1,chart2){
     $.post('/get_top_subreddits', {}, function(data) {
       var items = Object.keys(data).map(function (key) {
@@ -615,8 +618,9 @@
     document.getElementById("weekly").style.opacity = 0.6;
     document.getElementById("monthly").style.opacity = 1.0;
   };
-  updateData(chart1);
   updateData(chart1, chart2);
+
+
   function filterFunction() {
     var input, filter, ul, li, a, i;
     input = document.getElementById("myInput");
@@ -631,6 +635,7 @@
         }
     }
   }
+
 </script>
 </body>
 </html>
