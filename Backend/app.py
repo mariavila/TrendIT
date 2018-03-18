@@ -71,6 +71,15 @@ def get_top_categories():
     return jsonify(main.getMostPopularCategories(n_posts, time_period))
 
 
+@app.route('/get_top_results', methods=['POST'])
+def get_top_results():
+    n_posts = int(request.values.get('n_posts', '12'))
+    n_comments = int(request.values.get('n_comments', '50'))
+    time_period = request.values.get('time_period', 'day')
+    return jsonify(main.getTopResults(n_posts, n_comments, time_period))
+
+
+
 if __name__ == '__main__':
     main.initReddit()
     app.run(debug=True, port=65010)

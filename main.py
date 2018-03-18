@@ -116,9 +116,7 @@ def getTopResultsByCategory (category,n_posts=100,n_comments=50, timeperiod = "d
 
 
 def getMostPopularCategories (n_posts =100,timeperiod="day"):
-    print(timeperiod)
     posts = GetTop10.get_top_posts_subreddits(n_posts,timeperiod)
-    print(posts)
     cats = {}
     for p in posts :
         current_category = getCategory(p["sub"])
