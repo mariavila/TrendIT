@@ -115,8 +115,12 @@
             <div class="service-desc">
               <div class = "dropdownChooseTopic">
                  <span> Choose topic to view </span>
-                 <div class="dropdownChooseTopic-content">
-                   <p>All </p>
+                 <div id=topicDropdown class="dropdownChooseTopic-content">
+                   <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+                   <p><a href="#"> abcdefg</a></p>
+                   <p><a href="#"> sdsaaodjsalk</a></p>
+                   <p><a href="#"> pppppppppppp</a></p>
+                   <p><a href="#"> quuuuuuu</a></p>
                  </div>
               </div>
             </div>
@@ -613,6 +617,20 @@
   };
   updateData(chart1);
   updateData(chart1, chart2);
+  function filterFunction() {
+    var input, filter, ul, li, a, i;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    div = document.getElementById("topicDropdown");
+    a = div.getElementsByTagName("a");
+    for (i = 0; i < a.length; i++) {
+        if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+            a[i].style.display = "";
+        } else {
+            a[i].style.display = "none";
+        }
+    }
+  }
 </script>
 </body>
 </html>
