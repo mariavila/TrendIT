@@ -24,6 +24,16 @@
   <link href = "css/chart.css" rel="stylesheet" />
 
   <link href = "css/buttons.css" rel="stylesheet" />
+  <style>
+      .myL{
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100px;
+        z-index: 9999;
+        background: url(img/ajax-loader.gif) center no-repeat #fff;
+      }
+  </style>
 
 </head>
 
@@ -134,6 +144,8 @@
       </div>
 
     </div>
+
+    <div id="topSection">
     <div class="row">
       <div class="col-md-4">
         <div class="wow fadeInLeft" data-wow-delay="0.2s">
@@ -333,6 +345,7 @@
         </div>
       </div>
     </div>
+    </div>
   </section>
   <!-- /Section: top12 -->
 
@@ -414,6 +427,7 @@
   <script src="js/custom.js"></script>
 <script>
   function updateData(chart1,chart2){
+    $('#chart1').css('display','none').after('<div id="l1" class="myL"></div>');
     $.post('/get_top_subreddits', {}, function(data) {
       var items = Object.keys(data).map(function (key) {
         return [key, data[key]]
@@ -422,6 +436,8 @@
         return b[1] - a[1]
       });
       items = items.slice(0, 3);
+      $('#chart1').css('display','block');
+      $('#l1').remove();
       chart1.update(data = {
         labels: items.map(function (p) {
           return p[0];
@@ -431,6 +447,7 @@
         })]
       });
     });
+    $('#chart2').css('display','none').after('<div id="l2" class="myL"></div>');
     $.post('/get_top_categories', {}, function(data){
       if ('other' in data){
         delete data['other'];
@@ -442,6 +459,8 @@
         return b[1] - a[1]
       });
       items = items.slice(0, 3);
+      $('#chart2').css('display','block');
+      $('#l2').remove();
       chart2.update(data = {
         labels: items.map(function (p) {
           return p[0];
@@ -451,7 +470,8 @@
         })]
       });
     });
-    $.post('/get_top_results',{},function(data){
+    $('#topSection').css('display','none').after('<div id="l3" class="myL"></div>');
+    $.post('/get_top_results', {}, function(data){
         console.log(data);
         for(var i = 0; i<data.length; i++){
             $('#toptitle'+(i+1).toString()).html(data[i][0]);
@@ -460,43 +480,11 @@
             if (percentage == 0) percentage = 50;
             $('#barTop'+(i+1).toString()).width(percentage.toString()+"%")
                                          .css('background-color',getColorForPercentage(percentage/100));
+
+            $('#topSection').css('display','block');
+            $('#l3').remove()   ;
         }
     });
-    document.getElementById("barTop1").style.width = "10%";
-    document.getElementById("barTop1").style.backgroundColor = getColorForPercentage(0.1);
-
-    document.getElementById("barTop2").style.width = "10%";
-    document.getElementById("barTop2").style.backgroundColor = getColorForPercentage(0.1);
-
-    document.getElementById("barTop3").style.width = "10%";
-    document.getElementById("barTop3").style.backgroundColor = getColorForPercentage(0.1);
-
-    document.getElementById("barTop4").style.width = "10%";
-    document.getElementById("barTop4").style.backgroundColor = getColorForPercentage(0.1);
-
-    document.getElementById("barTop5").style.width = "10%";
-    document.getElementById("barTop5").style.backgroundColor = getColorForPercentage(0.1);
-
-    document.getElementById("barTop6").style.width = "10%";
-    document.getElementById("barTop6").style.backgroundColor = getColorForPercentage(0.1);
-
-    document.getElementById("barTop7").style.width = "10%";
-    document.getElementById("barTop7").style.backgroundColor = getColorForPercentage(0.1);
-
-    document.getElementById("barTop8").style.width = "10%";
-    document.getElementById("barTop8").style.backgroundColor = getColorForPercentage(0.1);
-
-    document.getElementById("barTop9").style.width = "10%";
-    document.getElementById("barTop9").style.backgroundColor = getColorForPercentage(0.1);
-
-    document.getElementById("barTop10").style.width = "10%";
-    document.getElementById("barTop10").style.backgroundColor = getColorForPercentage(0.1);
-
-    document.getElementById("barTop11").style.width = "10%";
-    document.getElementById("barTop11").style.backgroundColor = getColorForPercentage(0.1);
-
-    document.getElementById("barTop12").style.width = "10%";
-    document.getElementById("barTop12").style.backgroundColor = getColorForPercentage(0.1);
   }
   var data1 = {
     labels: ['[cute]', '[wo]', '[su]'],
@@ -563,6 +551,7 @@
 
   var chart2 = new Chartist.Bar('#chart2', data2, options2, responsiveOptions);
 
+  updateData(chart1, chart2);
   var percentColors = [
     { pct: 0.0, color: { r: 0xff, g: 0x00, b: 0 } },
     { pct: 0.5, color: { r: 0xff, g: 0xff, b: 0 } },
@@ -592,7 +581,6 @@
 
   document.getElementById("daily").style.opacity = 1.0;
   //per default es carrega daily
-  updateData();
 
   function daylyClicked(){
     document.getElementById("daily").style.opacity = 1.0;
@@ -611,8 +599,6 @@
     document.getElementById("weekly").style.opacity = 0.6;
     document.getElementById("monthly").style.opacity = 1.0;
   };
-  updateData(chart1);
-  updateData(chart1, chart2);
 </script>
 </body>
 </html>
