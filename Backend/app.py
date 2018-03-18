@@ -78,6 +78,10 @@ def get_top_results():
     time_period = request.values.get('time_period', 'day')
     return jsonify(main.getTopResults(n_posts, n_comments, time_period))
 
+@app.route('/get_categories', methods=['POST'])
+def get_categories():
+    return jsonify(main.getCategoriesList())
+
 
 
 if __name__ == '__main__':
