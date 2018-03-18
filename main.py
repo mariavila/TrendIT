@@ -9,14 +9,17 @@ subreditCateg = {}
 c = createClassifier()
 def loadDictionary():
     filename = "subredditCategories.csv"
-    script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
-    abs_file_path = os.path.join(script_dir, filename)
-    if not os.path.isfile(abs_file_path) :
+    full_path = filename
+    for path in sys.path:
+        full_path = os.path.join(path, filename)
+        if os.path.isfile(str(full_path)):
+            break
+    if not os.path.isfile(full_path):
         print ("WARNING : Not found")
         return {}
     else:
         d = {}
-        fp = open( abs_file_path, 'rb' )
+        fp = open( full_path, 'rb' )
         reader = csv.reader( fp, delimiter=',', quotechar='"', escapechar='\\' )
 
         for row in reader:
@@ -102,40 +105,37 @@ def getTopResults (n_posts=10, n_comments=50, timeperiod="day"):
     posts = GetTop10.get_top_posts_comments(n_posts,n_comments,timeperiod)
     return getOverallValues(c,posts)
 
-def getTopResultsByCategories (categories,n_posts=100,n_comments=50, timeperiod = "day"):
-    categories = [word.lower() for word in categories]
+def getTopResultsByCategory (category,n_posts=100,n_comments=50, timeperiod = "day"):
     posts = GetTop10.get_top_posts_comments(n_posts,n_comments,timeperiod)
-    posts = filter (lambda p : getCategory(p["sub"]) in categories, posts)
+    posts = filter (lambda p : getCategory(p["sub"])==category.lower(), posts)
     if len (posts)>0:
         return getOverallValues(c,posts)
     else :
-        print ("WARNING : wrong categories : "+categories)
+        print ("WARNING : wrong category : "+category)
         return []
 
 
-def getMostPopularCategories (n_posts =100,n_comments=50,timeperiod="day"):
-    posts = GetTop10.get_top_posts_comments(n_posts,n_comments,timeperiod)
+def getMostPopularCategories (n_posts =100,timeperiod="day"):
+    print(timeperiod)
+    posts = GetTop10.get_top_posts_subreddits(n_posts,timeperiod)
+    print(posts)
     cats = {}
     for p in posts :
         current_category = getCategory(p["sub"])
         if current_category in cats.keys():
-            cats[current_category] += 1
+            cats[current_category] += p["upvotes"]
         else:
-            cats[current_category] = 1
+            cats[current_category] = p["upvotes"]
     return cats
 
 def getCategory (subreddit):
-    if len(subreditCateg.keys())==0:
-        subreditCateg = loadDictionary()
+    subreditCateg = loadDictionary()
     if subreddit in subreditCateg.keys():
         return subreditCateg[subreddit].lower()
     else :
         return "other"
 if __name__=="__main__":
     initReddit()
-    subreditCateg = loadDictionary()
-
-    print (getMostPopularCategories())
     print (getTopSubredits())
     outliers = getDailyOutliers()
     topr = getTopResults()

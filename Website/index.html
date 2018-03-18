@@ -375,54 +375,80 @@
   <!-- Custom Theme JavaScript -->
   <script src="js/custom.js"></script>
 <script>
-  function updateData(chart1){
-    $.post('/get_top_subreddits', data={},success=function(data){
-      var items = Object.keys(data).map(function(key){
+  function updateData(chart1,chart2){
+    $.post('/get_top_subreddits', {}, function(data) {
+      var items = Object.keys(data).map(function (key) {
         return [key, data[key]]
       });
-      items.sort(function(a,b){return b[1]-a[1]});
-      items=items.slice(0,3);
-      chart1.update(data={
-        labels: items.map(function(p){return p[0];}),
-        series: [items.map(function(p){return p[1];})]
+      items.sort(function (a, b) {
+        return b[1] - a[1]
       });
+      items = items.slice(0, 3);
+      chart1.update(data = {
+        labels: items.map(function (p) {
+          return p[0];
+        }),
+        series: [items.map(function (p) {
+          return p[1];
+        })]
+      });
+    });
+    console.log("hello");
+    $.post('/get_top_categories', {}, function(data){
+      if ('other' in data){
+        delete data['other'];
+      }
+      var items = Object.keys(data).map(function (key) {
+        return [key, data[key]]
+      });
+      items.sort(function (a, b) {
+        return b[1] - a[1]
+      });
+      items = items.slice(0, 3);
+      chart2.update(data = {
+        labels: items.map(function (p) {
+          return p[0];
+        }),
+        series: [items.map(function (p) {
+          return p[1];
+        })]
+      });
+    });
+    document.getElementById("barTop1").style.width = "10%";
+    document.getElementById("barTop1").style.backgroundColor = getColorForPercentage(0.1);
 
-      document.getElementById("barTop1").style.width = "10%";
-      document.getElementById("barTop1").style.backgroundColor = getColorForPercentage(0.1);
+    document.getElementById("barTop2").style.width = "10%";
+    document.getElementById("barTop2").style.backgroundColor = getColorForPercentage(0.1);
 
-      document.getElementById("barTop2").style.width = "10%";
-      document.getElementById("barTop2").style.backgroundColor = getColorForPercentage(0.1);
+    document.getElementById("barTop3").style.width = "10%";
+    document.getElementById("barTop3").style.backgroundColor = getColorForPercentage(0.1);
 
-      document.getElementById("barTop3").style.width = "10%";
-      document.getElementById("barTop3").style.backgroundColor = getColorForPercentage(0.1);
+    document.getElementById("barTop4").style.width = "10%";
+    document.getElementById("barTop4").style.backgroundColor = getColorForPercentage(0.1);
 
-      document.getElementById("barTop4").style.width = "10%";
-      document.getElementById("barTop4").style.backgroundColor = getColorForPercentage(0.1);
+    document.getElementById("barTop5").style.width = "10%";
+    document.getElementById("barTop5").style.backgroundColor = getColorForPercentage(0.1);
 
-      document.getElementById("barTop5").style.width = "10%";
-      document.getElementById("barTop5").style.backgroundColor = getColorForPercentage(0.1);
+    document.getElementById("barTop6").style.width = "10%";
+    document.getElementById("barTop6").style.backgroundColor = getColorForPercentage(0.1);
 
-      document.getElementById("barTop6").style.width = "10%";
-      document.getElementById("barTop6").style.backgroundColor = getColorForPercentage(0.1);
+    document.getElementById("barTop7").style.width = "10%";
+    document.getElementById("barTop7").style.backgroundColor = getColorForPercentage(0.1);
 
-      document.getElementById("barTop7").style.width = "10%";
-      document.getElementById("barTop7").style.backgroundColor = getColorForPercentage(0.1);
+    document.getElementById("barTop8").style.width = "10%";
+    document.getElementById("barTop8").style.backgroundColor = getColorForPercentage(0.1);
 
-      document.getElementById("barTop8").style.width = "10%";
-      document.getElementById("barTop8").style.backgroundColor = getColorForPercentage(0.1);
+    document.getElementById("barTop9").style.width = "10%";
+    document.getElementById("barTop9").style.backgroundColor = getColorForPercentage(0.1);
 
-      document.getElementById("barTop9").style.width = "10%";
-      document.getElementById("barTop9").style.backgroundColor = getColorForPercentage(0.1);
+    document.getElementById("barTop10").style.width = "10%";
+    document.getElementById("barTop10").style.backgroundColor = getColorForPercentage(0.1);
 
-      document.getElementById("barTop10").style.width = "10%";
-      document.getElementById("barTop10").style.backgroundColor = getColorForPercentage(0.1);
+    document.getElementById("barTop11").style.width = "10%";
+    document.getElementById("barTop11").style.backgroundColor = getColorForPercentage(0.1);
 
-      document.getElementById("barTop11").style.width = "10%";
-      document.getElementById("barTop11").style.backgroundColor = getColorForPercentage(0.1);
-
-      document.getElementById("barTop12").style.width = "10%";
-      document.getElementById("barTop12").style.backgroundColor = getColorForPercentage(0.1);
-    })
+    document.getElementById("barTop12").style.width = "10%";
+    document.getElementById("barTop12").style.backgroundColor = getColorForPercentage(0.1);
   }
   var data1 = {
     labels: ['[cute]', '[wo]', '[su]'],
@@ -487,7 +513,7 @@
     }
   };
 
-  new Chartist.Bar('#chart2', data2, options2, responsiveOptions);
+  var chart2 = new Chartist.Bar('#chart2', data2, options2, responsiveOptions);
 
   var percentColors = [
     { pct: 0.0, color: { r: 0xff, g: 0x00, b: 0 } },
@@ -516,7 +542,7 @@
   }
 
 
-  updateData(chart1);
+  updateData(chart1, chart2);
 </script>
 </body>
 </html>
