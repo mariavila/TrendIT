@@ -9,12 +9,14 @@ subreditCateg = {}
 c = createClassifier()
 def loadDictionary():
     filename = "subredditCategories.csv"
-    if not os.path.isfile(filename) :
+    script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
+    abs_file_path = os.path.join(script_dir, filename)
+    if not os.path.isfile(abs_file_path) :
         print ("WARNING : Not found")
         return {}
     else:
         d = {}
-        fp = open( filename, 'rb' )
+        fp = open( abs_file_path, 'rb' )
         reader = csv.reader( fp, delimiter=',', quotechar='"', escapechar='\\' )
 
         for row in reader:
@@ -68,11 +70,11 @@ def getTopSubredits (num=100,time="day"):
     subredits = GetTop10.get_top_posts_subreddits(num,time)
     subredNames= getSubredditNames(subredits)
     d = {}
-    for elem in subredNames:
-        if elem in d.keys():
-            d[elem] += 1
+    for i in range (len (subredNames)):
+        if subredNames[i] in d.keys():
+            d[subredNames[i]] += subredits[i]["upvotes"]
         else :
-            d[elem] = 1
+            d[subredNames[i]] = subredits[i]["upvotes"]
     return d
 def getDailyOutliers ():
 
@@ -100,13 +102,14 @@ def getTopResults (n_posts=10, n_comments=50, timeperiod="day"):
     posts = GetTop10.get_top_posts_comments(n_posts,n_comments,timeperiod)
     return getOverallValues(c,posts)
 
-def getTopResultsByCategory (category,n_posts=100,n_comments=50, timeperiod = "day"):
+def getTopResultsByCategories (categories,n_posts=100,n_comments=50, timeperiod = "day"):
+    categories = [word.lower() for word in categories]
     posts = GetTop10.get_top_posts_comments(n_posts,n_comments,timeperiod)
-    posts = filter (lambda p : getCategory(p["sub"])==category.lower(), posts)
+    posts = filter (lambda p : getCategory(p["sub"]) in categories, posts)
     if len (posts)>0:
         return getOverallValues(c,posts)
     else :
-        print ("WARNING : wrong category : "+category)
+        print ("WARNING : wrong categories : "+categories)
         return []
 
 
@@ -122,14 +125,18 @@ def getMostPopularCategories (n_posts =100,n_comments=50,timeperiod="day"):
     return cats
 
 def getCategory (subreddit):
-    subreditCateg = loadDictionary()
+    if len(subreditCateg.keys())==0:
+        subreditCateg = loadDictionary()
     if subreddit in subreditCateg.keys():
         return subreditCateg[subreddit].lower()
     else :
         return "other"
 if __name__=="__main__":
     initReddit()
+    subreditCateg = loadDictionary()
 
+    print (getMostPopularCategories())
+    print (getTopSubredits())
     outliers = getDailyOutliers()
     topr = getTopResults()
 

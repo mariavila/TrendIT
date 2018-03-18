@@ -432,9 +432,53 @@
   <!-- Custom Theme JavaScript -->
   <script src="js/custom.js"></script>
 <script>
-  function updateData(){
+  function updateData(chart1){
     $.post('/get_top_subreddits', data={},success=function(data){
-      console.log(data)
+      var items = Object.keys(data).map(function(key){
+        return [key, data[key]]
+      });
+      items.sort(function(a,b){return b[1]-a[1]});
+      items=items.slice(0,3);
+      chart1.update(data={
+        labels: items.map(function(p){return p[0];}),
+        series: [items.map(function(p){return p[1];})]
+      });
+
+      document.getElementById("barTop1").style.width = "10%";
+      document.getElementById("barTop1").style.backgroundColor = getColorForPercentage(0.1);
+
+      document.getElementById("barTop2").style.width = "10%";
+      document.getElementById("barTop2").style.backgroundColor = getColorForPercentage(0.1);
+
+      document.getElementById("barTop3").style.width = "10%";
+      document.getElementById("barTop3").style.backgroundColor = getColorForPercentage(0.1);
+
+      document.getElementById("barTop4").style.width = "10%";
+      document.getElementById("barTop4").style.backgroundColor = getColorForPercentage(0.1);
+
+      document.getElementById("barTop5").style.width = "10%";
+      document.getElementById("barTop5").style.backgroundColor = getColorForPercentage(0.1);
+
+      document.getElementById("barTop6").style.width = "10%";
+      document.getElementById("barTop6").style.backgroundColor = getColorForPercentage(0.1);
+
+      document.getElementById("barTop7").style.width = "10%";
+      document.getElementById("barTop7").style.backgroundColor = getColorForPercentage(0.1);
+
+      document.getElementById("barTop8").style.width = "10%";
+      document.getElementById("barTop8").style.backgroundColor = getColorForPercentage(0.1);
+
+      document.getElementById("barTop9").style.width = "10%";
+      document.getElementById("barTop9").style.backgroundColor = getColorForPercentage(0.1);
+
+      document.getElementById("barTop10").style.width = "10%";
+      document.getElementById("barTop10").style.backgroundColor = getColorForPercentage(0.1);
+
+      document.getElementById("barTop11").style.width = "10%";
+      document.getElementById("barTop11").style.backgroundColor = getColorForPercentage(0.1);
+
+      document.getElementById("barTop12").style.width = "10%";
+      document.getElementById("barTop12").style.backgroundColor = getColorForPercentage(0.1);
     })
   }
   var data1 = {
@@ -476,7 +520,7 @@
       }
     }]
   ];
-  new Chartist.Bar('#chart1', data1, options1, responsiveOptions);
+  var chart1 = new Chartist.Bar('#chart1', data1, options1, responsiveOptions);
 
   var data2 = {
     labels: ['science', 'images', 'internet'],
@@ -528,41 +572,6 @@
       // or output as hex if preferred
   }
 
-  document.getElementById("barTop1").style.width = "10%";
-  document.getElementById("barTop1").style.backgroundColor = getColorForPercentage(0.1);
-
-  document.getElementById("barTop2").style.width = "10%";
-  document.getElementById("barTop2").style.backgroundColor = getColorForPercentage(0.1);
-
-  document.getElementById("barTop3").style.width = "10%";
-  document.getElementById("barTop3").style.backgroundColor = getColorForPercentage(0.1);
-
-  document.getElementById("barTop4").style.width = "10%";
-  document.getElementById("barTop4").style.backgroundColor = getColorForPercentage(0.1);
-
-  document.getElementById("barTop5").style.width = "10%";
-  document.getElementById("barTop5").style.backgroundColor = getColorForPercentage(0.1);
-
-  document.getElementById("barTop6").style.width = "10%";
-  document.getElementById("barTop6").style.backgroundColor = getColorForPercentage(0.1);
-
-  document.getElementById("barTop7").style.width = "10%";
-  document.getElementById("barTop7").style.backgroundColor = getColorForPercentage(0.1);
-
-  document.getElementById("barTop8").style.width = "10%";
-  document.getElementById("barTop8").style.backgroundColor = getColorForPercentage(0.1);
-
-  document.getElementById("barTop9").style.width = "10%";
-  document.getElementById("barTop9").style.backgroundColor = getColorForPercentage(0.1);
-
-  document.getElementById("barTop10").style.width = "10%";
-  document.getElementById("barTop10").style.backgroundColor = getColorForPercentage(0.1);
-
-  document.getElementById("barTop11").style.width = "10%";
-  document.getElementById("barTop11").style.backgroundColor = getColorForPercentage(0.1);
-
-  document.getElementById("barTop12").style.width = "10%";
-  document.getElementById("barTop12").style.backgroundColor = getColorForPercentage(0.1);
 
   document.getElementById("daily").style.opacity = 1.0;
   //per default es carrega daily
@@ -585,6 +594,7 @@
     document.getElementById("weekly").style.opacity = 0.6;
     document.getElementById("monthly").style.opacity = 1.0;
   };
+  updateData(chart1);
 </script>
 </body>
 </html>
