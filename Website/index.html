@@ -433,9 +433,12 @@ $.post('/get_categories',{},function(data){
         $('#topicDropdown').append('<p><a href="#">'+data[i].toString()+'</a></p>');
     }
 });
-  function updateData(chart1,chart2){
+  function updateData(chart1,chart2,time_period){
+    if(time_period==undefined){
+        time_period='day';
+    }
     $('#chart1').css('display','none').after('<div id="l1" class="myL"></div>');
-    $.post('/get_top_subreddits', {}, function(data) {
+    $.post('/get_top_subreddits', {'time_period':time_period}, function(data) {
       var items = Object.keys(data).map(function (key) {
         return [key, data[key]]
       });
@@ -455,7 +458,7 @@ $.post('/get_categories',{},function(data){
       });
     });
     $('#chart2').css('display','none').after('<div id="l2" class="myL"></div>');
-    $.post('/get_top_categories', {}, function(data){
+    $.post('/get_top_categories', {'time_period':time_period}, function(data){
       if ('other' in data){
         delete data['other'];
       }
@@ -478,7 +481,7 @@ $.post('/get_categories',{},function(data){
       });
     });
     $('#topSection').css('display','none').after('<div id="l3" class="myL"></div>');
-    $.post('/get_top_results', {}, function(data){
+    $.post('/get_top_results', {'time_period':time_period}, function(data){
         console.log(data);
         for(var i = 0; i<data.length; i++){
             $('#toptitle'+(i+1).toString()).html(data[i][0]);
@@ -587,26 +590,38 @@ $.post('/get_categories',{},function(data){
 
 
   document.getElementById("daily").style.opacity = 1.0;
+  var selectedc='day';
   //per default es carrega daily
 
   function daylyClicked(){
-    document.getElementById("daily").style.opacity = 1.0;
-    document.getElementById("weekly").style.opacity = 0.6;
-    document.getElementById("monthly").style.opacity = 0.6;
+      if(selectedc!='day') {
+          selectedc='day';
+        document.getElementById("daily").style.opacity = 1.0;
+        document.getElementById("weekly").style.opacity = 0.6;
+        document.getElementById("monthly").style.opacity = 0.6;
+          updateData(chart1,chart2,'day')
+      }
   };
 
   function weeklyClicked(){
+      if(selectedc!='week') {
+          selectedc='week';
     document.getElementById("daily").style.opacity = 0.6;
     document.getElementById("weekly").style.opacity = 1.0;
     document.getElementById("monthly").style.opacity = 0.6;
+          updateData(chart1,chart2,'week')
+      }
   };
 
   function monthlyClicked(){
+      if(selectedc!='month') {
+          selectedc='month';
     document.getElementById("daily").style.opacity = 0.6;
     document.getElementById("weekly").style.opacity = 0.6;
     document.getElementById("monthly").style.opacity = 1.0;
+          updateData(chart1,chart2,'month')
+      }
   };
-  updateData(chart1, chart2);
 
 
   function filterFunction() {

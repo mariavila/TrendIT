@@ -23,7 +23,7 @@
     opacity: 1;
 }
 
-.buttonChangetop:hover {opacity: 1}
+.buttonChangetop:hover {opacity: .9}
 
 .dropdownChooseTopic {
     position: relative;
